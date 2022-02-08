@@ -1,2 +1,3 @@
-# allergy_exome
-supplement
+## Exon variants associated with asthma and allergy
+
+R code
