@@ -4,14 +4,14 @@
 # Exon variants associated with asthma and allergy
 # -------------------------------------------------------------------------
 
-usehere <- c("Gviz","biomaRt","dplyr","DBI","rtracklayer","BSgenome.Hsapiens.UCSC.hg38","ggVennDiagram","GEnomicRanges","ggplot","ggrepel","grDevices","Iranges","RSQLite","stringr","tibble","tidyR","utils")
+usehere <- c("Gviz","biomaRt","dplyr","DBI","rtracklayer","BSgenome.Hsapiens.UCSC.hg38","ggVennDiagram","GenomicRanges","ggplot2","ggrepel","grDevices","IRanges","RSQLite","stringr","tibble","tidyr","utils")
 lapply(usehere, require, character.only = TRUE)
 work <- c("~/Desktop") # or getwd()
 # not_run!
 
 # functions ---------------------------------------------------------------
 
-ä data cleaning
+# data cleaning
 scramble <- function(df) {
 	print( dim(df) )
 	words <- paste(c("_variant", "_region_variant","start_codon_","_transcript_exon"), collapse = "|")
@@ -181,7 +181,7 @@ p <- ggplot() +
 	geom_vline(xintercept = genepos$cumpos, linetype="dotted", color="gray") +
 	annotate("text", x=genepos$cumpos, y=30, label=c(1:20," ","22","X","Y"), size=7 ) +
 	
-	clean_theme( axis.text.x=element_blank(), axis.text=element_text(size=20), axis.ticks.x=element_blank() ) 
+	clean_theme( axis.text.x=element_blank(), axis.text=element_text(size=20)), axis.ticks.x=element_blank() ) 
 
 fn = paste0(work,"/fig1_genome.png")
 png(file =  fn, width = 1600, height = 900, units = 'px')
