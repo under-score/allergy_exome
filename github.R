@@ -7,7 +7,12 @@
 usehere <- c("Gviz","biomaRt","dplyr","DBI","rtracklayer","BSgenome.Hsapiens.UCSC.hg38","ggVennDiagram","GenomicRanges","ggplot2","ggrepel","grDevices","IRanges","RSQLite","stringr","tibble","tidyr","utils")
 lapply(usehere, require, character.only = TRUE)
 work <- c("~/Desktop") # or getwd()
+
 # not_run!
+# if there are errors in magittr chains, use the latest dplyr version (deinstall tidyr) and prepend the package dplyr::command
+# *** open issue: the allelic dataset from azphenas is missing some variants 
+# *** found in the dominant or recessive dataset
+# *** until resolved use scramble2()
 
 # functions ---------------------------------------------------------------
 
@@ -30,6 +35,31 @@ scramble <- function(df) {
 		arrange(chr,pos)
 	print( dim(res) )
   return(res)
+}
+
+scramble2 <- function(df) {
+	print( dim(df) )
+	words <- paste(c("_variant", "_region_variant","start_codon_","_transcript_exon"), collapse = "|")
+	res <- df %>%
+		separate(Variant,sep="-",into = c("chromosome_name","pos","alleleA","alleleB")) %>%
+		left_join(genepos, by = c("chromosome_name" = "chromosome_name")) %>%
+		mutate(Consequence = gsub(words, "\\1", Consequence.type) ) %>%
+		mutate(id=paste(chromosome_name,pos,Gene,Consequence,sep="_")) %>%
+		mutate(chr = as.integer( case_when(chromosome_name=="X"~"23",chromosome_name=="Y"~"24",TRUE~chromosome_name) ) ) %>%
+		mutate(pos =as.numeric(pos)) %>%
+		mutate(cumpos = pos+cumpos ) %>%
+		mutate(p = -log10(p.value)) %>%    # P≤2×10-9 in Wang = 0.000000002; log10 is 8.69897
+		mutate(p = case_when(p>30 ~ 30, TRUE ~ p))
+	rebuild <- res %>%
+		distinct(id) %>%
+		left_join(res %>% dplyr::select(-Model,-p)  %>% group_by(id) %>% filter(row_number()==1), by="id") %>%
+		left_join(res %>% filter(Model=="allelic")  %>% dplyr::select(id,p) %>% dplyr::rename(p_all=p), by="id") %>%
+		left_join(res %>% filter(Model=="dominant") %>% dplyr::select(id,p) %>% dplyr::rename(p_dom=p), by="id") %>%
+		left_join(res %>% filter(Model=="recessive")%>% dplyr::select(id,p) %>% dplyr::rename(p_rec=p), by="id") %>%
+		mutate(p= purrr::pmap_dbl(list(p_all, p_dom, p_rec, na.rm=TRUE), max)) %>%
+		arrange(chr,pos)
+	print( dim(rebuild) )
+	return(rebuild)
 }
 
 # show genomic positions
