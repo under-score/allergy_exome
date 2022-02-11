@@ -10,7 +10,7 @@ work <- c("~/Desktop") # or getwd()
 
 # not_run!
 # if there are errors in magittr chains, use the latest dplyr version (deinstall tidyr) and prepend the package dplyr::command
-# *** open issue: the allelic dataset from azphenas is missing some variants 
+# *** 11Feb22 open issue: the allelic dataset from azphenas is missing some variants 
 # *** found in the dominant or recessive dataset
 # *** until resolved use scramble2()
 
