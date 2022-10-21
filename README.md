@@ -1,6 +1,6 @@
 ## Exon variants associated with asthma and allergy
 
-R script for Fig 1--3
+R script for producing Fig 1, 2, 3
 
 
 ![fig1_genome](https://user-images.githubusercontent.com/2796454/152944603-4d028026-7eed-4b04-a016-230447095789.png)
