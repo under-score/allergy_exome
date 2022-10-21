@@ -1,6 +1,6 @@
 # -------------------------------------------------------------------------
 # Astra PheWAS
-# 12Jan2-7Feb22 / wjst
+# 12Jan22-7Feb22
 # Exon variants associated with asthma and allergy
 # -------------------------------------------------------------------------
 
@@ -10,9 +10,8 @@ work <- c("~/Desktop") # or getwd()
 
 # not_run!
 # if there are errors in magittr chains, use the latest dplyr version (deinstall tidyr) and prepend the package dplyr::command
-# *** 11Feb22 open issue: the allelic dataset from azphenas is missing some variants 
-# *** found in the dominant or recessive dataset
-# *** until resolved use scramble2()
+# *** 11Feb22 open issue: the allelic dataset from azphenas is missing some variants that are found in the dominant or recessive dataset
+# *** until this issue is resolved use scramble2()
 
 # functions ---------------------------------------------------------------
 
